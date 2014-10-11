@@ -87,42 +87,163 @@ void RunList(string &filename)
   int current;
 
   in.ignore(1000, '\n');
+
   while (in >> command >> current)
     if (command == 'i')
+    { 
       list.insert(current, itr);
-    else 
+      itr.advance();
+    } 
+    else
       list.remove(current);
 
-  /*itr = list.zeroth();
+/*
+  itr = list.zeroth(); /////////////////////////////////
 
-  while (!itr.isPastEnd())
-  {
-    cout << itr.retrieve() << endl;
-    itr.advance();
-  }*/
+  while (!itr.isPastEnd()) /////////////////////////////////
+  { /////////////////////////////////
+    cout << itr.retrieve() << endl; /////////////////////////////////
+    itr.advance(); /////////////////////////////////
+  } /////////////////////////////////
+
+  if (list.isEmpty()) /////////////////////////////////
+    cout << "LOSER" << endl; /////////////////////////////////
+*/
+  in.close();
 }
 
 void RunCursorList(string &filename)
 {
+  ifstream in(filename.c_str());
+  CursorList<int> cursList(cursorSpace);
+  CursorListItr<int> cursItr = cursList.zeroth();
 
+  char command;
+  int current;
+
+  in.ignore(1000, '\n');
+
+  while (in >> command >> current)
+    if (command == 'i')
+    {
+      cursList.insert(current, cursItr);
+      cursItr.advance();
+    }
+    else 
+      cursList.remove(current);
+
+  /*cursItr = cursList.first(); /////////////////////////////////
+
+  while (!cursItr.isPastEnd()) /////////////////////////////////
+  { /////////////////////////////////
+    cout << cursItr.retrieve() << endl; /////////////////////////////////
+    cursItr.advance(); /////////////////////////////////
+  } /////////////////////////////////
+
+  if (cursList.isEmpty()) /////////////////////////////////
+    cout << "LOSER" << endl; /////////////////////////////////*/
+
+  in.close();
 }
 
 void RunStackAr(string &filename)
 {
+  ifstream in(filename.c_str());
+  StackAr<int> stackAr(250000);
 
+  char command;
+  int current;
+
+  in.ignore(1000, '\n');
+
+  while (in >> command >> current)
+    if (command == 'i')
+      stackAr.push(current);
+    else 
+      stackAr.pop();
+
+  /*
+  while (!stackAr.isEmpty())
+    cout << stackAr.topAndPop() << endl;
+  */
+
+  in.close();
 }
 
 void RunStackLi(string &filename)
 {
+  ifstream in(filename.c_str());
+  StackLi<int> stackLi;
 
+  char command;
+  int current;
+
+  in.ignore(1000, '\n');
+
+  while (in >> command >> current)
+    if (command == 'i')
+      stackLi.push(current);
+    else 
+      stackLi.pop();
+
+  /*
+  while (!stackLi.isEmpty())
+    cout << stackLi.topAndPop() << endl;
+  */
+
+  in.close();
 }
 
 void RunQueueAr(string &filename)
 {
+  ifstream in(filename.c_str());
+  Queue<int> q(250000);
 
+  char command;
+  int current;
+
+  in.ignore(1000, '\n');
+
+  while (in >> command >> current)
+    if (command == 'i')
+      q.enqueue(current);
+    else 
+      q.dequeue();
+
+  /*
+  while (!q.isEmpty())
+  {
+    cout << q.getFront() << endl;
+    q.dequeue();
+  }
+  */
+
+  in.close();
 }
 
 void RunSkipList(string &filename)
 {
+  ifstream in(filename.c_str());
+  SkipList<int> cristina(250000);
 
+  char command;
+  int current;
+
+  in.ignore(1000, '\n');
+
+  while (in >> command >> current)
+    if (command == 'i')
+      cristina.insert(current);
+    else 
+      cristina.deleteNode(current);
+
+  /*
+  while (!cristina.isEmpty())
+  {
+    cout << cristina.getFront() << endl;
+    cristina.dequeue();
+  }
+  */
+
+  in.close();
 }
