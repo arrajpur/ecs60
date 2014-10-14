@@ -39,6 +39,7 @@ int main(void)
   {
     choice = getChoice();
     ct.reset();
+
     switch (choice)
     { 
       case 1 : RunList(filename); break;
@@ -50,7 +51,7 @@ int main(void)
     } // switch (choice)
 
     cout << "CPU time: " << ct.cur_CPUTime() << endl;
-  } while (choice > 0 && choice < 7);
+  } while (choice > 0);
 
   return 0;
 }
@@ -61,16 +62,25 @@ int getChoice(void)
 {
   int choice;
 
-  cout << "\n      ADT Menu\n"
-    << "0. Quit\n"
-    << "1. LinkedList\n"
-    << "2. CursorList\n"
-    << "3. StackAr\n"
-    << "4. StackLi\n"
-    << "5. QueueAr\n"
-    << "6. SkipList\n"
-    << "Your choice >> ";
-  cin >> choice;
+  do
+  {
+    cout << "\n      ADT Menu\n"
+      << "0. Quit\n"
+      << "1. LinkedList\n"
+      << "2. CursorList\n"
+      << "3. StackAr\n"
+      << "4. StackLi\n"
+      << "5. QueueAr\n"
+      << "6. SkipList\n"
+      << "Your choice >> ";
+    cin >> choice;
+
+    if (choice < 0 || choice > 6)
+    {
+      cout << "Your choice is not between 1 and 6.\nPlease try again." << endl;
+      continue;
+    }
+  } while (choice < 0 || choice > 6);
 
   return choice;
 }
@@ -90,10 +100,7 @@ void RunList(string &filename)
 
   while (in >> command >> current)
     if (command == 'i')
-    { 
       list.insert(current, itr);
-      itr.advance();
-    } 
     else
       list.remove(current);
 
@@ -125,10 +132,7 @@ void RunCursorList(string &filename)
 
   while (in >> command >> current)
     if (command == 'i')
-    {
       cursList.insert(current, cursItr);
-      cursItr.advance();
-    }
     else 
       cursList.remove(current);
 
@@ -224,7 +228,7 @@ void RunQueueAr(string &filename)
 void RunSkipList(string &filename)
 {
   ifstream in(filename.c_str());
-  SkipList<int> cristina(250000);
+  SkipList<int> cristina(-1, 250000);
 
   char command;
   int current;
