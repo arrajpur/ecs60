@@ -1,0 +1,95 @@
+#include<iostream>
+#include"queen.h"
+#include"StackAr.h"
+#include"LinkedList.h"
+using namespace std;
+
+
+StackAr<int> ConstructSafeList (StackAr<int> soln, int lev);
+
+int main()
+{
+
+	int level = 2;
+	StackAr<Possibility> Options(8);
+	StackAr<int> Solution(8);	// pop when it doesn't work
+
+	Solution.push(1); // first Queen goes in 0 position
+	while (level < 9 && level > 1) 
+	{
+		if (!Options.isEmpty() && (Options.top()).GetIndex() == level) 
+		{
+			Possibility tmp = Options.topAndPop();
+			int soln = tmp.GetNext();
+
+			while (soln == -1 && !Options.isEmpty()) 
+			{
+				tmp = Options.topAndPop();
+				Solution.pop();
+				soln = tmp.GetNext();
+
+				level--;	
+			}
+			Options.push(tmp);
+
+			Solution.push(soln);
+			level++;
+		}
+		else 
+		{
+			StackAr<int> currSafe = ConstructSafeList(Solution, level);
+			Possibility curr(level, currSafe);
+			if (currSafe.isEmpty()) 
+			{
+				level--;
+				Solution.pop();
+			}	
+			else
+			{
+				Solution.push(currSafe.top());
+				Options.push(curr);
+				level++;
+			}
+
+		}
+	}
+
+	cout << endl << "Solution is" << endl;
+	while (!Solution.isEmpty()) {
+		cout << Solution.topAndPop() << endl;
+	}
+}
+
+StackAr<int> ConstructSafeList (StackAr<int> soln, int lev)
+{
+	StackAr<int> current = soln; 
+	StackAr<int> safe(7);
+	
+	int stackSize = lev - 1; // just to be clear, and it's LIFO
+
+	List<int> pos;
+	ListItr<int> it = pos.zeroth();
+	for (int i = 1; i < 9; i++) 
+		pos.insert(i, it);	
+	while (!current.isEmpty()) 
+	{
+		int num = current.topAndPop();
+		Queen tmp(num);
+		StackAr<int> list = tmp.ReturnDangerList(stackSize, lev);
+		pos.remove(num);
+		if (!list.isEmpty())
+			pos.remove(list.topAndPop());
+		if (!list.isEmpty())
+			pos.remove(list.topAndPop());
+		stackSize--;
+	}
+	it = pos.first();
+
+	while (!it.isPastEnd()) {
+		safe.push(it.retrieve());
+		it.advance(); // neccessary?
+	}
+
+	return safe;
+}
+
