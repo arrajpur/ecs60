@@ -9,7 +9,7 @@ using namespace std;
 LeafNode::LeafNode(int LSize, InternalNode *p,
   BTreeNode *left, BTreeNode *right) : BTreeNode(LSize, p, left, right)
 {
-  values = new int[LSize + 1];
+  values = new int[LSize + 1]; // modified to make sorting easier
 }  // LeafNode()
 
 
@@ -28,6 +28,9 @@ LeafNode* LeafNode::insert(int value)
 { 
   if (count < leafSize) 
   {
+	// find the place for value
+	// search and sort should be done outside the conditionals
+	// as it has to be done for each case
 	int index = -1;
 
 	for (int i = 0; i < count; i++)
@@ -39,12 +42,13 @@ LeafNode* LeafNode::insert(int value)
 
 	if (index != -1) 
 	{
+		// shift down array
 		for (int n = count; n > index; n--)
 			values[n] = values[n - 1];	
 
 		values[index] = value;		
 	}
-	else 
+	else // if value goes in last spot 
 		values[count] = value;
 	
 	count++;
@@ -52,7 +56,8 @@ LeafNode* LeafNode::insert(int value)
   else 
   {
 	if (leftSibling && leftSibling->getCount() < leafSize) 
-	{
+	{ // lookLeft
+		// this search and sort is extraneous, should be done first like in InternalNode
 		int index = -1;
 
 		for (int i = 0; i < count; i++)
@@ -76,11 +81,13 @@ LeafNode* LeafNode::insert(int value)
 		leftSibling->insert(values[0]);
 		count--;	
 
+		// shift array down
+		// because values[o] has been given away
 		for (int o = 0; o < count; o++)
 			values[o] = values[o+1];
 	}
 	else if (rightSibling && rightSibling->getCount() < leafSize)
-	{ 
+	{ // lookRight 
 		int index = -1;
 
 		for (int i = 0; i < count; i++)
@@ -105,9 +112,9 @@ LeafNode* LeafNode::insert(int value)
 		count--; 
 	}
 	else
-	{
+	{ // split
 		LeafNode * newLeaf = new LeafNode(leafSize, parent, this, rightSibling); 
-
+		// again, extraneous sorting
 		int index = -1;
 		for (int i = 0; i < count; i++)
 			if (values[i] > value)
@@ -126,22 +133,27 @@ LeafNode* LeafNode::insert(int value)
 			values[count] = value;
 
 		count++;
-
-		int mine = (leafSize + 1 )/ 2 ;  
+		
+		// find last index of values to keep
+		// works for even and odd leafSize
+		int mine = (leafSize + 1 ) / 2 ;  
 		mine--;
 
+		// give away all values beyond that index
 		for (int k = mine + 1; k < leafSize + 1; k++) 
 		{
 			newLeaf->insert(values[k]);
 			count--; // not actually deleting
 		}
-
+		// reassign rightSibling's leftSibling 
 		if (rightSibling)
 			rightSibling->setLeftSibling(newLeaf);
 
+		// set current leaf's rightSibling as new LeafNode
 		rightSibling = newLeaf;
-		
-		return newLeaf; // parent updates here
+	
+		// return new LeafNode	
+		return newLeaf;
 	}
   }
   return NULL; // to avoid warnings for now.
