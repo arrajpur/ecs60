@@ -45,26 +45,18 @@ InternalNode* InternalNode::insert(int value)
 		}
 
 		BTreeNode * test = children[correct_child]->insert(value);
-//		if (keys[correct_child] == children[correct_child]->getMinimum() && prevcount != children[correct_child]->getCount())
-//			keys[correct_child+1] = children[correct_child+1]->getMinimum();
-//
-			cout << "Keys of correct child is " << keys[correct_child] << endl;
-			cout << "correct child min is " << children[correct_child]->getMinimum() << endl;
 		if (children[correct_child]->getCount() == prevcount && isLeftFull && rightSibling)
 		{
 			// passed right
 			if (correct_child != count -1) {
-				cout << "Internal knows we passed right " << endl;
 				keys[correct_child+1] = children[correct_child+1]->getMinimum();
 			}
 			else
 			{ 
-				cout << "rightSibling has another parent!" << endl;
 				((InternalNode*)rightSibling)->setKey();
 			}
 		} 
 		keys[correct_child] = children[correct_child]->getMinimum();
-//		keys[correct_child+1] = children[correct_child+1]->getMinimum();
 
 		if (test) 
 		{
@@ -99,13 +91,9 @@ InternalNode* InternalNode::insert(int value)
 
 			if (count > internalSize) 
 			{
-				//look Left
-				//look Right
-				//Split
 				if (leftSibling && leftSibling->getCount() < internalSize)
 				{
-					cout << "Internal node look left" << endl;
-					((InternalNode*)leftSibling)->insert(children[0]); // sibling insert! need to write
+					((InternalNode*)leftSibling)->insert(children[0]); 
 					count--;
 					for (int o = 0; o < count; o++)
 					{
@@ -115,22 +103,17 @@ InternalNode* InternalNode::insert(int value)
 				}
 				else if (rightSibling && rightSibling->getCount() < internalSize)
 				{
-				// check right
-					cout << "Internal node look right" << endl;
-				
 					((InternalNode*)rightSibling)->insert(children[count - 1]);
 					count--;
 				}
 				else
 				{
-				// split
-					cout << "Internal node split" << endl;	
 					InternalNode * newInternal = new InternalNode(internalSize, leafSize, parent, this, rightSibling);	
 					int mine = (internalSize + 1) / 2;
 					mine--;
 					for (int k = mine + 1; k < internalSize + 1; k++)
 					{
-						((InternalNode*)newInternal)->insert(children[k]); // again that other function
+						((InternalNode*)newInternal)->insert(children[k]); 
 						count--;
 					}
 					if (rightSibling)
@@ -145,25 +128,14 @@ InternalNode* InternalNode::insert(int value)
 		}
 		else 
 		{
-			// child did not split
-			// internalNode will not split
 			return NULL;
 		}
-//	else 
-//	{
-		// check left
-//	}
 	
   return NULL; // to avoid warnings for now.
 } // InternalNode::insert()
 
 void InternalNode::insert(BTreeNode *oldRoot, BTreeNode *node2)
 { // Node must be the root, and node1
-  // students must write this
-
-//temporary
-//
-	cout << "Creating new root, InternalNode insert" << endl;
 	children[0] = oldRoot;
 	children[1] = node2;  
 	count = 2;
@@ -173,16 +145,14 @@ void InternalNode::insert(BTreeNode *oldRoot, BTreeNode *node2)
 
 void InternalNode::insert(BTreeNode *newNode) // from a sibling
 {
-  // students may write this
 	int index = -1;
 	for (int i = 0; i < count; i++)
-	{
 		if (children[i]->getMinimum() > newNode->getMinimum())
 		{
 			index = i;
 			break;
 		}
-	}
+	
 	if (index != -1)
 	{
 		for (int n = count; n > index; n--)
@@ -217,6 +187,5 @@ void InternalNode::print(Queue <BTreeNode*> &queue)
 
 void InternalNode::setKey(void)
 {
-	cout << "setKey count is " << count << endl; 
 	keys[0] = children[0]->getMinimum();
 }

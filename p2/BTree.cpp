@@ -17,11 +17,8 @@ void BTree::insert(const int value)
 	BTreeNode * test = root->insert(value);
 	if (test) 
 	{
-		// make new root
 		InternalNode * newRoot = new InternalNode(internalSize, leafSize, NULL, NULL, NULL);
-		// Insert into new root with
 		newRoot->insert(root, test);
-		// set root to newRoot
 		root = newRoot;
 	}
 
