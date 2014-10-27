@@ -38,8 +38,33 @@ InternalNode* InternalNode::insert(int value)
 		if (correct_child == -1) 
 			correct_child = count - 1;
 
+		int prevcount = children[correct_child]->getCount(); 
+		bool isLeftFull = false; 
+		if (!children[correct_child]->getLeftSibling() || (children[correct_child]->getLeftSibling())->getCount() == leafSize) {
+			isLeftFull = true;
+		}
+
 		BTreeNode * test = children[correct_child]->insert(value);
+//		if (keys[correct_child] == children[correct_child]->getMinimum() && prevcount != children[correct_child]->getCount())
+//			keys[correct_child+1] = children[correct_child+1]->getMinimum();
+//
+			cout << "Keys of correct child is " << keys[correct_child] << endl;
+			cout << "correct child min is " << children[correct_child]->getMinimum() << endl;
+		if (children[correct_child]->getCount() == prevcount && isLeftFull && rightSibling)
+		{
+			// passed right
+			if (correct_child != count -1) {
+				cout << "Internal knows we passed right " << endl;
+				keys[correct_child+1] = children[correct_child+1]->getMinimum();
+			}
+			else
+			{ 
+				cout << "rightSibling has another parent!" << endl;
+				((InternalNode*)rightSibling)->setKey();
+			}
+		} 
 		keys[correct_child] = children[correct_child]->getMinimum();
+//		keys[correct_child+1] = children[correct_child+1]->getMinimum();
 
 		if (test) 
 		{
@@ -190,4 +215,8 @@ void InternalNode::print(Queue <BTreeNode*> &queue)
 
 } // InternalNode::print()
 
-
+void InternalNode::setKey(void)
+{
+	cout << "setKey count is " << count << endl; 
+	keys[0] = children[0]->getMinimum();
+}
