@@ -33,7 +33,8 @@ InternalNode* InternalNode::insert(int value)
 				correct_child = i - 1;  
 			else
 				correct_child = i;
-			break;
+
+			break; 
 		}
 
 	// if value is bigger than all the mins of the children, add it to the last child
@@ -42,24 +43,36 @@ InternalNode* InternalNode::insert(int value)
 
 	// for child rightSibling pass check
 	int prevcount = children[correct_child]->getCount(); 
+	int prevmin = children[correct_child]->getMinimum();
 	bool isLeftFull = false; // leftSibling of the child
 
 	// if there is no leftSibling or it's full, isLeftFull = true
-	if (!children[correct_child]->getLeftSibling() || (children[correct_child]->getLeftSibling())->getCount() == leafSize) 
-		isLeftFull = true;
+//	if (correct_child == 0 || (children[correct_child]->getLeftSibling())->getCount() == leafSize) 
 
 	// insert value to the correct child
 	BTreeNode * test = children[correct_child]->insert(value);
+	if (correct_child == 0 || (children[correct_child]->getMinimum() != prevmin && children[correct_child]->getCount() <= prevcount)) 
+		isLeftFull = true;
 
 	// if child passed to rightSibling
 	// Need to update key of rightSibling's parent
 	// as new value in rightSibling will be the new minimum
-	if (children[correct_child]->getCount() == prevcount && isLeftFull && rightSibling)
+//	cout << "child lookRight debug: correct_child is " << correct_child << endl;
+//	cout << "child lookRight debug: getCount() is " << children[correct_child]->getCount() << endl;
+//	cout << "child lookRight debug: prevcount is " << prevcount << endl;
+//	cout << "child lookRight debug: isLeftfull is " << isLeftFull << endl;
+//	cout << "child lookRight debug: getMinimum() is " << children[correct_child]->getMinimum() << endl;
+	
+//	if (children[correct_child]->getCount() == prevcount && isLeftFull && rightSibling)
+//	if (children[correct_child]->getCount() <= prevcount && isLeftFull && rightSibling)
+//	if (isLeftFull && rightSibling)
+	if (isLeftFull)
 	{
+//		cout << endl <<"child lookRight debug: child has looked right" << endl << endl;
 		// if child's rightSibling is also a child of this InternalNode
 		if (correct_child != count - 1) 
 			keys[correct_child+1] = children[correct_child+1]->getMinimum();
-		else // if child's rightSibling has a different parent
+		else if (rightSibling)// if child's rightSibling has a different parent
 			((InternalNode*)rightSibling)->setKey();
 	} 
 
@@ -118,8 +131,10 @@ InternalNode* InternalNode::insert(int value)
 			}
 			else if (rightSibling && rightSibling->getCount() < internalSize)
 			{ // lookRight
+				// problem is when this node lookRight
 				((InternalNode*)rightSibling)->insert(children[count - 1]);
 				count--;
+				
 			}
 			else
 			{ // split
@@ -148,8 +163,6 @@ InternalNode* InternalNode::insert(int value)
 		}
 			
 	}
-	else 
-		return NULL;
 	
   return NULL; // to avoid warnings for now.
 } // InternalNode::insert()
@@ -167,6 +180,7 @@ void InternalNode::insert(BTreeNode *oldRoot, BTreeNode *node2)
 
 void InternalNode::insert(BTreeNode *newNode) // from a sibling
 {
+//	cout << "internal node got child from sibling" << endl;
 	// find place for new child
 	int index = -1;
 
@@ -194,7 +208,8 @@ void InternalNode::insert(BTreeNode *newNode) // from a sibling
 		children[count] = newNode;
 		keys[count] = newNode->getMinimum();
 	}
-
+	if (parent)
+		parent->setKey();
 	count++;
 } // InternalNode::insert()
 
@@ -216,4 +231,7 @@ void InternalNode::setKey(void)
 { // set the key of child's rightSibling's parent if it is not current node
   // allows access to that parent's keys array to be updated
 	keys[0] = children[0]->getMinimum();
+//	for (int i = 0; i < count; i++) {
+//		keys[i] = children[i]->getMinimum();
+//	}
 }
