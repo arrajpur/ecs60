@@ -71,8 +71,6 @@ InternalNode* InternalNode::insert(int value)
 	// if child split
 	if (test) 
 	{
-//		int newmin = test->getMinimum(); // extraneous 
-
 		// find place for new child, insert into children[]
 		// and keep children[] sorted
 		int index = -1;
