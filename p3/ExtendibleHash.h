@@ -3,24 +3,23 @@
 
 class ExtendibleLeaf
 {
-	int * values; // values, stored as numerals or bitwise?
-	// some sort of "am I full" variable
-	// possibly LeafSize? 
+	int * values; 
 	int maxSize;
 	int valueSize;
-public: // are the const int &object params right?
+public: 
 	ExtendibleLeaf(int leafSize);
 	bool insert(const int &object);
 	int remove(int pos); 
 	int search(const int &object);
 	int * split(int b);
+	int getValueSize();
 };
 
 class ExtendibleHash
 {
   ExtendibleLeaf  **Directory;
   int bits;
-  int size; // what is this used for? // size of Directory probably
+  int size;
   int LeafSize;
   int minusone;
 
