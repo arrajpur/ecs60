@@ -1,3 +1,4 @@
+//Aparna Rajpurkar Aaron Lewis
         #include "QuadraticProbing.h"
 	#include "mynew.h"
 

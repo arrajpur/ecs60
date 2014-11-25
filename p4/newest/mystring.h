@@ -1,3 +1,4 @@
+//Aparna Rajpurkar Aaron Lewis
 #ifndef _MY_STRING_H_
 #define _MY_STRING_H_
 

@@ -1,3 +1,4 @@
+//Aparna Rajpurkar Aaron Lewis
 
 #include "mynew.h"
 #include "tcp.h"
@@ -104,7 +105,7 @@ void TCP::receive(int portNum, int packetNum, const char packet[257])
 	Port newPort;
 	newPort.key = portNum;
 /*b*/	newPort.value = bheapSize;
-//	newPort.value = splaySize;
+//s	newPort.value = splaySize;
 
 	Port tmpPort = mytable->find(newPort);
 
