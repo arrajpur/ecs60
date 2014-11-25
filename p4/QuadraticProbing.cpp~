@@ -1,5 +1,5 @@
         #include "QuadraticProbing.h"
-	#include "mynew.h"
+
 
         /**
          * Internal method to test if a positive number is prime.
