@@ -46,8 +46,12 @@ public:
   int getStream(int portNum, char stream[100000]);
 
 private:
+//	QuadraticHashTable<int> * table;
+
 //	slightly modified: pass x.key instead of x to hash(). Implemented operator != for Port.
 	QuadraticHashTable<Port> * mytable;
+
+//	ChainingHashTable<Port> * mytable;
 
 	BinaryHeap<Packet> ** bheaps;
 	int bheapSize;

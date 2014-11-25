@@ -1,5 +1,5 @@
         #include "BinaryHeap.h"
-
+	#include "mynew.h"
         /**
          * Construct the binary heap.
          * capacity is the capacity of the binary heap.
