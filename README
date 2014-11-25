@@ -3,6 +3,7 @@
 test
 =======
 README
+<<<<<<< HEAD
 >>>>>>> First commit
 hey hey hey hopefully this works
 
@@ -10,3 +11,7 @@ hey hey hey hopefully this works
 README
 >>>>>>> bc56ee80363d33ba22a85340fbe463272a58b41c
 //READ: SHAQ AT YOUR LIBRARY//llgkjgsdsd
+=======
+Testing master
+Tasting mester
+>>>>>>> 8923cd7558162099782c6b83ecc109e7332f5f7d
