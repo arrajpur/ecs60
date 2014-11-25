@@ -6,10 +6,8 @@
 
 #include "mynew.h"
 #include "QuadraticProbing.h"
-//#include "SeparateChaining.h"
 #include "BinaryHeap.h"
-#include "SplayTree.h"
-//#include "LinkedList.h"
+//s #include "SplayTree.h"
 #define PACKET_SIZE 256
 
 class Port
@@ -48,13 +46,13 @@ public:
 private:
 	QuadraticHashTable<Port> * mytable;
 
-//	BinaryHeap<Packet> ** bheaps;
-//	int bheapSize;
+/*b*/	BinaryHeap<Packet> ** bheaps;
+/*b*/	int bheapSize;
 	short * currentMins;
 	
-	SplayTree<Packet> ** splays;
-	int splaySize;
-	Packet notfound;
+//s	SplayTree<Packet> ** splays;
+//s	int splaySize;
+//s	Packet notfound;
 };
 
 #endif	/* TCP_H */
